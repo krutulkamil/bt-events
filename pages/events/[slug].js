@@ -1,11 +1,11 @@
 import Layout from "../../components/Layout";
 
-const EventsPage = () => {
+const EventPage = () => {
     return (
         <Layout>
-            <h1>My Events</h1>
+            <h1>My event</h1>
         </Layout>
     );
 };
 
-export default EventsPage;
+export default EventPage;
