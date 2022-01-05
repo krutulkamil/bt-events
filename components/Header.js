@@ -1,6 +1,6 @@
 import { FaHamsa } from 'react-icons/fa'
 import Link from 'next/link';
-import styles from '../styles/Header.module.css';
+import styles from '@/styles/Header.module.css';
 
 const Header = () => {
     return (
