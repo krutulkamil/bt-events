@@ -1,6 +1,7 @@
 import { FaHamsa } from 'react-icons/fa'
 import Link from 'next/link';
 import styles from '@/styles/Header.module.css';
+import Search from "@/components/Search";
 
 const Header = () => {
     return (
@@ -12,6 +13,8 @@ const Header = () => {
                         BreathTaking Events</a>
                 </Link>
             </div>
+
+            <Search />
 
             <nav>
                 <ul>
