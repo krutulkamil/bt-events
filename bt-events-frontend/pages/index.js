@@ -23,10 +23,10 @@ export default function HomePage({events}) {
 };
 
 export async function getServerSideProps () {
-    const res = await fetch(`${API_URL}/api/events`);
+    const res = await fetch(`${API_URL}/api/events?populate=image&sort=date:ASC`);
     const events = await res.json();
 
     return {
-        props: {events: events.slice(0, 3)}
+        props: {events: events.data.slice(0, 3)}
     }
 }
