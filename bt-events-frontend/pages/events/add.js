@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {useRouter} from 'next/router';
 import Link from 'next/link';
+import slugify from 'slugify';
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Layout from "@/components/Layout";
@@ -10,6 +11,7 @@ import styles from '@/styles/Form.module.css';
 const AddEventPage = () => {
     const [values, setValues] = useState({
         name: '',
+        slug: '',
         performers: '',
         venue: '',
         address: '',
@@ -18,18 +20,19 @@ const AddEventPage = () => {
         description: '',
     });
 
+    const {name, performers, venue, address, date, time, description} = values;
+
     const newEvent = {
         data: {
             ...values
         }
     }
 
-    const {name, performers, venue, address, date, time, description} = values;
-
     const router = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         const hasEmptyFields = Object.values(values).some((element) => element === "");
 
         if (hasEmptyFields) {
@@ -48,11 +51,13 @@ const AddEventPage = () => {
             toast.error("Something went wrong", {theme: "dark"})
         } else {
             const evt = await res.json();
-            // router.push(`/events/${evt.attributes.slug}`)
+            console.log(evt)
+            router.push(`/events/${evt.data.attributes.slug}`);
         }
 
         setValues({
             name: '',
+            slug: '',
             performers: '',
             venue: '',
             address: '',
@@ -82,7 +87,9 @@ const AddEventPage = () => {
                             id="name"
                             name="name"
                             value={name}
-                            onChange={handleInputChange('name')}/>
+                            onChange={handleInputChange('name')}
+                            onMouseOut={() => setValues({...values, slug: slugify(name)})}
+                        />
                     </div>
                     <div>
                         <label htmlFor='performers'>Performers</label>
