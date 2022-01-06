@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import {useRouter} from 'next/router';
 import Link from 'next/link';
+import {ToastContainer, toast} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Layout from "@/components/Layout";
 import {API_URL} from "@/config/index";
 import styles from '@/styles/Form.module.css';
@@ -16,13 +18,39 @@ const AddEventPage = () => {
         description: '',
     });
 
+    const newEvent = {
+        data: {
+            ...values
+        }
+    }
+
     const {name, performers, venue, address, date, time, description} = values;
 
     const router = useRouter();
 
-    const handleSubmit = e => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(values);
+        const hasEmptyFields = Object.values(values).some((element) => element === "");
+
+        if (hasEmptyFields) {
+            toast.error('Please fill in all fields', {theme: "dark"});
+        }
+
+        const res = await fetch(`${API_URL}/api/events`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(newEvent)
+        });
+
+        if (!res.ok) {
+            toast.error("Something went wrong", {theme: "dark"})
+        } else {
+            const evt = await res.json();
+            // router.push(`/events/${evt.attributes.slug}`)
+        }
+
         setValues({
             name: '',
             performers: '',
@@ -62,7 +90,7 @@ const AddEventPage = () => {
                             type='text'
                             name='performers'
                             id='performers'
-                            value={values.performers}
+                            value={performers}
                             onChange={handleInputChange('performers')}
                         />
                     </div>
@@ -72,7 +100,7 @@ const AddEventPage = () => {
                             type='text'
                             name='venue'
                             id='venue'
-                            value={values.venue}
+                            value={venue}
                             onChange={handleInputChange('venue')}
                         />
                     </div>
@@ -82,7 +110,7 @@ const AddEventPage = () => {
                             type='text'
                             name='address'
                             id='address'
-                            value={values.address}
+                            value={address}
                             onChange={handleInputChange('address')}
                         />
                     </div>
@@ -92,7 +120,7 @@ const AddEventPage = () => {
                             type='date'
                             name='date'
                             id='date'
-                            value={values.date}
+                            value={date}
                             onChange={handleInputChange('date')}
                         />
                     </div>
@@ -102,7 +130,7 @@ const AddEventPage = () => {
                             type='text'
                             name='time'
                             id='time'
-                            value={values.time}
+                            value={time}
                             onChange={handleInputChange('time')}
                         />
                     </div>
@@ -112,12 +140,24 @@ const AddEventPage = () => {
                     <textarea
                         name='description'
                         id='description'
-                        value={values.description}
+                        value={description}
                         onChange={handleInputChange('description')}
                     />
                 </div>
                 <input type='submit' value='Add Event' className='btn' />
             </form>
+
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+            />
         </Layout>
     );
 };
