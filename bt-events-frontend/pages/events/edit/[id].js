@@ -6,6 +6,7 @@ import {FaImage} from 'react-icons/fa';
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Layout from "@/components/Layout";
+import Modal from "@/components/Modal";
 import {API_URL} from "@/config/index";
 import styles from '@/styles/Form.module.css';
 
@@ -22,7 +23,9 @@ const EditEventPage = ({evt}) => {
     });
 
     const [imagePreview, setImagePreview] = useState(evt.attributes.image.data ?
-        evt.attributes.image.data.attributes.formats.thumbnail.url : null)
+        evt.attributes.image.data.attributes.formats.thumbnail.url : null);
+
+    const [showModal, setShowModal] = useState(false);
 
     const {name, performers, venue, address, date, time, description} = values;
 
@@ -166,10 +169,14 @@ const EditEventPage = ({evt}) => {
             )}
 
             <div>
-                <button className="btn-secondary">
+                <button onClick={() => setShowModal(true)} className="btn-secondary">
                     <FaImage /> Set Image
                 </button>
             </div>
+
+            <Modal show={showModal} onClose={() => setShowModal(false)}>
+                IMAGE UPLOAD
+            </Modal>
 
             <ToastContainer
                 position="top-right"
