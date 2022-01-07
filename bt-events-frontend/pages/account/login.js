@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
+import AuthContext from "@/context/AuthContext";
 import {FaUser} from 'react-icons/fa';
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -12,6 +13,8 @@ const LoginPage = () => {
         password: ""
     });
 
+    const {login, error} = useContext(AuthContext);
+
     const {email, password} = values;
 
     const handleInputChange = name => e => {
@@ -20,7 +23,7 @@ const LoginPage = () => {
 
     const handleSubmit = e => {
         e.preventDefault();
-        console.log({email, password})
+        login({email, password})
     };
 
     return (

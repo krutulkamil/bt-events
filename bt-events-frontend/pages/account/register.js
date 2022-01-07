@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
 import Link from 'next/link';
 import Layout from '@/components/Layout';
+import AuthContext from "@/context/AuthContext";
 import {FaUser} from 'react-icons/fa';
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -13,6 +14,8 @@ const RegisterPage = () => {
         password: "",
         passwordConfirm: ""
     });
+
+    const {register, error} = useContext(AuthContext);
 
     const {username, email, password, passwordConfirm} = values;
 
@@ -28,7 +31,7 @@ const RegisterPage = () => {
             return;
         }
 
-        console.log({email, password, passwordConfirm, username})
+        register({username, email, password})
     };
 
     return (
