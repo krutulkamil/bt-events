@@ -7,6 +7,7 @@ import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Layout from "@/components/Layout";
 import Modal from "@/components/Modal";
+import ImageUpload from "@/components/ImageUpload";
 import {API_URL} from "@/config/index";
 import styles from '@/styles/Form.module.css';
 
@@ -20,6 +21,9 @@ const EditEventPage = ({evt}) => {
         date: evt.attributes.date,
         time: evt.attributes.time,
         description: evt.attributes.description,
+        image: {
+            id: null
+        }
     });
 
     const [imagePreview, setImagePreview] = useState(evt.attributes.image.data ?
@@ -75,6 +79,38 @@ const EditEventPage = ({evt}) => {
 
     const handleInputChange = value => e => {
         setValues({...values, [value]: e.target.value});
+    };
+
+    const imageUploaded = async (e) => {
+        const res = await fetch(`${API_URL}/api/events/${evt.id}?populate=image`);
+        const data = await res.json();
+
+        const fetchUploadedImages = await fetch(`${API_URL}/api/upload/files`);
+        const allImages = await fetchUploadedImages.json();
+        const lastElement = await allImages[allImages.length - 1];
+        const lastElementId = await allImages[allImages.length - 1].id;
+
+        const imageAttr = {
+            id: lastElementId,
+            attributes: {...lastElement}
+        };
+        delete imageAttr.attributes.id;
+
+        const newObject = {
+            ...data,
+            data : {
+                attributes : {
+                    ...values,
+                    image: {
+                        data: imageAttr
+                    }
+                }
+            }
+        }
+
+        setValues({...values, image: lastElementId})
+        setImagePreview(newObject.data.attributes.image.data.attributes.formats.thumbnail.url);
+        setShowModal(false);
     };
 
     return (
@@ -170,12 +206,12 @@ const EditEventPage = ({evt}) => {
 
             <div>
                 <button onClick={() => setShowModal(true)} className="btn-secondary">
-                    <FaImage /> Set Image
+                    <FaImage/> Set Image
                 </button>
             </div>
 
             <Modal show={showModal} onClose={() => setShowModal(false)}>
-                IMAGE UPLOAD
+                <ImageUpload evtId={evt.id} imageUploaded={imageUploaded}/>
             </Modal>
 
             <ToastContainer
