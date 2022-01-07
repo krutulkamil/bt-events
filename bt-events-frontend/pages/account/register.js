@@ -17,6 +17,8 @@ const RegisterPage = () => {
 
     const {register, error} = useContext(AuthContext);
 
+    useEffect(() => error && toast.error(error, {theme: 'dark'}), [error]);
+
     const {username, email, password, passwordConfirm} = values;
 
     const handleInputChange = name => e => {
@@ -78,7 +80,7 @@ const RegisterPage = () => {
                             onChange={handleInputChange('passwordConfirm')}
                         />
                     </div>
-                    <input type="submit" value="Login" className="btn"/>
+                    <input type="submit" value="Register" className="btn"/>
                 </form>
 
                 <p>Already have an account?
