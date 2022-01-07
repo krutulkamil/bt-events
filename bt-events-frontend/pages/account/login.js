@@ -15,6 +15,8 @@ const LoginPage = () => {
 
     const {login, error} = useContext(AuthContext);
 
+    useEffect(() => error && toast.error(error, {theme: 'dark'}), [error]);
+
     const {email, password} = values;
 
     const handleInputChange = name => e => {
