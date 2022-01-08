@@ -4,7 +4,7 @@ import DashboardEvent from "@/components/DashboardEvent";
 import {API_URL} from "@/config/index";
 import styles from "@/styles/Dashboard.module.css";
 
-const DashboardPage = ({events, user}) => {
+const DashboardPage = ({events}) => {
     const deleteEvent = (id) => {
         console.log(id);
     };
@@ -40,7 +40,6 @@ export async function getServerSideProps({req}) {
 
     return {
         props: {
-            user: currentUser.username,
             events: events.data
         }
     }

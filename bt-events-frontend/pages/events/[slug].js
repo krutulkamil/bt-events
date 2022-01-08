@@ -1,3 +1,4 @@
+import {useContext} from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { FaPencilAlt, FaTimes } from 'react-icons/fa';
@@ -8,9 +9,11 @@ import Layout from "@/components/Layout";
 import {API_URL} from "@/config/index";
 import styles from '@/styles/Event.module.css';
 import React from "react";
+import AuthContext from "@/context/AuthContext";
 
 const EventPage = ({evt}) => {
     const router = useRouter();
+    const {user} = useContext(AuthContext);
 
     const deleteEvent = async (e) => {
         if (confirm('Are you sure?')) {
@@ -31,17 +34,18 @@ const EventPage = ({evt}) => {
     return (
         <Layout>
             <div className={styles.event}>
-                <div className={styles.controls}>
-                    <Link href={`/events/edit/${evt.id}`}>
-                        <a>
-                            <FaPencilAlt /> Edit Event
+                {user && user.role.id === 1 ?
+                    <div className={styles.controls}>
+                        <Link href={`/events/edit/${evt.id}`}>
+                            <a>
+                                <FaPencilAlt /> Edit Event
+                            </a>
+                        </Link>
+                        <a href="#" className={styles.delete} onClick={deleteEvent}>
+                            <FaTimes /> Delete Event
                         </a>
-                    </Link>
-                    <a href="#" className={styles.delete} onClick={deleteEvent}>
-                        <FaTimes /> Delete Event
-                    </a>
-                </div>
-
+                    </div> : null
+                }
                 <span>
                     {evt.attributes.date} at {evt.attributes.time}
                 </span>
