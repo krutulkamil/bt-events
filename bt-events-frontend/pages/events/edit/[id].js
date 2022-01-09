@@ -10,8 +10,9 @@ import Modal from "@/components/Modal";
 import ImageUpload from "@/components/ImageUpload";
 import {API_URL} from "@/config/index";
 import styles from '@/styles/Form.module.css';
+import {parseCookies} from "@/helpers/index";
 
-const EditEventPage = ({evt}) => {
+const EditEventPage = ({evt, token}) => {
     const [values, setValues] = useState({
         name: evt.attributes.name,
         slug: evt.attributes.slug,
@@ -21,9 +22,7 @@ const EditEventPage = ({evt}) => {
         date: evt.attributes.date,
         time: evt.attributes.time,
         description: evt.attributes.description,
-        image: {
-            id: null
-        }
+        image: evt.attributes.image.data?.id || null
     });
 
     const [imagePreview, setImagePreview] = useState(evt.attributes.image.data ?
@@ -53,12 +52,17 @@ const EditEventPage = ({evt}) => {
         const res = await fetch(`${API_URL}/api/events/${evt.id}`, {
             method: "PUT",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify(newEvent)
         });
 
         if (!res.ok) {
+            if (res.status === 403 || res.status === 401) {
+                toast.error('No token included', {theme: "dark"});
+                return;
+            }
             toast.error("Something went wrong", {theme: "dark"})
         } else {
             const evt = await res.json();
@@ -211,7 +215,7 @@ const EditEventPage = ({evt}) => {
             </div>
 
             <Modal show={showModal} onClose={() => setShowModal(false)}>
-                <ImageUpload evtId={evt.id} imageUploaded={imageUploaded}/>
+                <ImageUpload evtId={evt.id} imageUploaded={imageUploaded} token={token}/>
             </Modal>
 
             <ToastContainer
@@ -232,12 +236,14 @@ const EditEventPage = ({evt}) => {
 export async function getServerSideProps({params: {id}, req}) {
     const res = await fetch(`${API_URL}/api/events/${id}?populate=image`);
     const evt = await res.json();
+    const {token} = parseCookies(req);
 
     // console.log(req.headers.cookie);
 
     return {
         props: {
-            evt: evt.data
+            evt: evt.data,
+            token
         }
     }
 }

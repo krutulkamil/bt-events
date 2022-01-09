@@ -10,15 +10,19 @@ import {API_URL} from "@/config/index";
 import styles from '@/styles/Event.module.css';
 import React from "react";
 import AuthContext from "@/context/AuthContext";
+import {parseCookies} from "@/helpers/index";
 
-const EventPage = ({evt}) => {
+const EventPage = ({evt, token}) => {
     const router = useRouter();
     const {user} = useContext(AuthContext);
 
-    const deleteEvent = async (e) => {
+    const deleteEvent = async () => {
         if (confirm('Are you sure?')) {
             const res = await fetch(`${API_URL}/api/events/${evt.id}`, {
-                method: 'DELETE'
+                method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             });
 
             const data = await res.json();
@@ -90,13 +94,15 @@ const EventPage = ({evt}) => {
     );
 };
 
-export async function getServerSideProps({query: {slug}}) {
+export async function getServerSideProps({query: {slug}, req}) {
     const res = await fetch(`${API_URL}/api/events?populate=image&filters[slug][$contains]=${slug}`);
     const events = await res.json();
+    const {token} = parseCookies(req);
 
     return {
         props: {
-            evt: events.data[0]
+            evt: events.data[0],
+            token
         }
     }
 }
