@@ -1,14 +1,18 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {useRouter} from 'next/router';
 import Link from 'next/link';
+import {parseCookies} from "@/helpers/index";
 import slugify from 'slugify';
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Layout from "@/components/Layout";
 import {API_URL} from "@/config/index";
 import styles from '@/styles/Form.module.css';
+import AuthContext from "@/context/AuthContext";
 
-const AddEventPage = () => {
+const AddEventPage = ({token}) => {
+    const {user: loggedUser} = useContext(AuthContext);
+
     const [values, setValues] = useState({
         name: '',
         slug: '',
@@ -18,6 +22,7 @@ const AddEventPage = () => {
         date: '',
         time: '',
         description: '',
+        user: loggedUser.id
     });
 
     const {name, performers, venue, address, date, time, description} = values;
@@ -42,13 +47,18 @@ const AddEventPage = () => {
         const res = await fetch(`${API_URL}/api/events`, {
             method: "POST",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token.token}`
             },
             body: JSON.stringify(newEvent)
         });
 
         if (!res.ok) {
-            toast.error("Something went wrong", {theme: "dark"})
+            if (res.status === 403 || res.status === 401) {
+                toast.error('No token included', {theme: "dark"});
+                return;
+            }
+            toast.error("Something went wrong", {theme: "dark"});
         } else {
             const evt = await res.json();
             router.push(`/events/${evt.data.attributes.slug}`);
@@ -62,7 +72,8 @@ const AddEventPage = () => {
             address: '',
             date: '',
             time: '',
-            description: ''
+            description: '',
+            user: null
         });
     };
 
@@ -150,7 +161,7 @@ const AddEventPage = () => {
                         onChange={handleInputChange('description')}
                     />
                 </div>
-                <input type='submit' value='Add Event' className='btn' />
+                <input type='submit' value='Add Event' className='btn'/>
             </form>
 
             <ToastContainer
@@ -167,5 +178,15 @@ const AddEventPage = () => {
         </Layout>
     );
 };
+
+export async function getServerSideProps({req}) {
+    const token = parseCookies(req);
+
+    return {
+        props: {
+            token
+        }
+    }
+}
 
 export default AddEventPage;
