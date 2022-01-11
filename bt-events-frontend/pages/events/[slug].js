@@ -6,6 +6,7 @@ import {ToastContainer, toast} from 'react-toastify';
 import {useRouter} from 'next/router';
 import 'react-toastify/dist/ReactToastify.css';
 import Layout from "@/components/Layout";
+import EventMap from "@/components/EventMap";
 import {API_URL} from "@/config/index";
 import styles from '@/styles/Event.module.css';
 import React from "react";
@@ -71,6 +72,8 @@ const EventPage = ({evt, token}) => {
                 <p>{evt.attributes.description}</p>
                 <h3>Venue: {evt.attributes.venue}</h3>
                 <p>{evt.attributes.address}</p>
+
+                <EventMap evt={evt}/>
 
                 <Link href="/events">
                     <a className={styles.back}>
