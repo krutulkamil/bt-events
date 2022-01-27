@@ -1,16 +1,38 @@
+import React, {FunctionComponent, ReactChild, ReactChildren} from 'react';
 import {createContext, useState, useEffect} from 'react';
 import {useRouter} from 'next/router';
 import {NEXT_URL} from "@/config/index";
 
+export interface AuxProps {
+    children: ReactChild | ReactChildren;
+}
+
+export interface User {
+    id:        number;
+    username:  string;
+    email:     string;
+    provider:  string;
+    confirmed: boolean;
+    blocked:   boolean;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
 const AuthContext = createContext(null);
 
-export const AuthProvider = ({children}) => {
-    const [user, setUser] = useState(null);
+export const AuthProvider: FunctionComponent<AuxProps> = ({children}) => {
+    const [user, setUser] = useState<User>(null);
     const [error, setError] = useState(null);
 
     const router = useRouter();
 
-    useEffect(() => checkUserLoggedIn(), []);
+    useEffect(() => {
+        const checkUserAsync = async () => {
+            await checkUserLoggedIn();
+        }
+
+        checkUserAsync();
+    }, []);
 
     const register = async ({username, email, password}) => {
         const res = await fetch(`${NEXT_URL}/api/register`, {
@@ -63,7 +85,7 @@ export const AuthProvider = ({children}) => {
         }
     };
 
-    const checkUserLoggedIn = async () => {
+    const checkUserLoggedIn = async (): Promise<void> => {
         const res = await fetch(`${NEXT_URL}/api/user`);
         const data = await res.json();
 

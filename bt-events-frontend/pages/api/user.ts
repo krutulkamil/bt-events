@@ -1,7 +1,8 @@
 import cookie from 'cookie';
 import {API_URL} from '@/config/index';
+import type {NextApiRequest, NextApiResponse} from 'next';
 
-export default async (req, res) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === 'GET') {
         if (!req.headers.cookie) {
             res.status(403).json({message: 'Not Authorized'});

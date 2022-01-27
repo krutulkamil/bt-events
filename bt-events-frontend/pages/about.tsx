@@ -1,6 +1,6 @@
 import Layout from "@/components/Layout";
 
-const AboutPage = () => {
+const AboutPage = (): JSX.Element => {
     return (
         <Layout title="About Breathtaking Events">
             <h1>About</h1>

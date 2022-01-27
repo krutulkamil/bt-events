@@ -15,7 +15,13 @@ const LoginPage = () => {
 
     const {login, error} = useContext(AuthContext);
 
-    useEffect(() => error && toast.error(error, {theme: 'dark'}), [error]);
+    useEffect(() => {
+        const checkErrors = () => error && toast.error(error, {theme: 'dark'});
+
+        checkErrors();
+    }, [error]);
+
+    // useEffect(() => error && toast.error(error, {theme: 'dark'}), [error]);
 
     const {email, password} = values;
 

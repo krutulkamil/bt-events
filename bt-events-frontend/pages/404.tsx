@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Layout from "@/components/Layout";
 import styles from '@/styles/404.module.css'
 
-const NotFoundPage = () => {
+const NotFoundPage = (): JSX.Element => {
     return (
         <Layout title="Page Not Found | Breathtaking Events">
             <div className={styles.error}>

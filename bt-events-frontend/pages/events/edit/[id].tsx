@@ -77,7 +77,8 @@ const EditEventPage = ({evt, token}) => {
             address: '',
             date: '',
             time: '',
-            description: ''
+            description: '',
+            image: ''
         });
     };
 
@@ -214,7 +215,7 @@ const EditEventPage = ({evt, token}) => {
                 </button>
             </div>
 
-            <Modal show={showModal} onClose={() => setShowModal(false)}>
+            <Modal show={showModal} onClose={() => setShowModal(false)} title="Image Upload">
                 <ImageUpload evtId={evt.id} imageUploaded={imageUploaded} token={token}/>
             </Modal>
 

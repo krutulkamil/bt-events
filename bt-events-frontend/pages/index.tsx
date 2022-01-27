@@ -1,9 +1,11 @@
 import Link from 'next/link';
 import Layout from '@/components/Layout';
 import EventItem from "@/components/EventItem";
-import {API_URL} from '@/config/index.js';
+import {API_URL} from '@/config/index';
+import {Events} from '@/helpers/types';
+import {GetServerSideProps, NextPage} from "next";
 
-export default function HomePage({events}) {
+const HomePage: NextPage<{ events: Events[] }> = ({events}): JSX.Element => {
 
     return (
         <Layout>
@@ -22,11 +24,14 @@ export default function HomePage({events}) {
     )
 };
 
-export async function getServerSideProps () {
+export const getServerSideProps: GetServerSideProps = async () => {
     const res = await fetch(`${API_URL}/api/events?populate=image&sort=date:ASC`);
     const events = await res.json();
+    console.log(events);
 
     return {
         props: {events: events.data.slice(0, 3)}
     }
 }
+
+export default HomePage;

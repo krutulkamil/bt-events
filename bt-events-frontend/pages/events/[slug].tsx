@@ -1,7 +1,7 @@
 import {useContext} from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FaPencilAlt, FaTimes } from 'react-icons/fa';
+import {FaPencilAlt, FaTimes} from 'react-icons/fa';
 import {ToastContainer, toast} from 'react-toastify';
 import {useRouter} from 'next/router';
 import 'react-toastify/dist/ReactToastify.css';
@@ -39,18 +39,17 @@ const EventPage = ({evt, token}) => {
     return (
         <Layout>
             <div className={styles.event}>
-                {user && user.role.id === 1 ?
-                    <div className={styles.controls}>
-                        <Link href={`/events/edit/${evt.id}`}>
-                            <a>
-                                <FaPencilAlt /> Edit Event
-                            </a>
-                        </Link>
-                        <a href="#" className={styles.delete} onClick={deleteEvent}>
-                            <FaTimes /> Delete Event
+
+                <div className={styles.controls}>
+                    <Link href={`/events/edit/${evt.id}`}>
+                        <a>
+                            <FaPencilAlt/> Edit Event
                         </a>
-                    </div> : null
-                }
+                    </Link>
+                    <a href="#" className={styles.delete} onClick={deleteEvent}>
+                        <FaTimes/> Delete Event
+                    </a>
+                </div>
                 <span>
                     {evt.attributes.date} at {evt.attributes.time}
                 </span>

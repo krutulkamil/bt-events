@@ -1,17 +1,18 @@
 import cookie from 'cookie';
 import {API_URL} from '@/config/index';
+import type {NextApiRequest, NextApiResponse} from 'next';
 
-export default async (req, res) => {
+export default async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === 'POST') {
-        const {identifier, password} = req.body;
+        const {username, email, password} = req.body;
 
-        const strapiRes = await fetch(`${API_URL}/api/auth/local`, {
+        const strapiRes = await fetch(`${API_URL}/api/auth/local/register`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({
-                identifier, password
+                username, email, password
             })
         });
 

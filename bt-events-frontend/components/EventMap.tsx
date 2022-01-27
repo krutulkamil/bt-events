@@ -4,7 +4,7 @@ import ReactMapGl, {Marker} from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import Geocode from 'react-geocode';
 
-const EventMap = ({evt}) => {
+const EventMap = ({evt}): JSX.Element => {
     const [lat, setLat] = useState(null);
     const [lng, setLng] = useState(null);
     const [loading, setLoading] = useState(null);
@@ -29,7 +29,7 @@ const EventMap = ({evt}) => {
 
     Geocode.setApiKey(process.env.NEXT_PUBLIC_GOOGLE_MAP_API_TOKEN);
 
-    if (loading) return false;
+    if (loading) return;
 
     return (
         <ReactMapGl
