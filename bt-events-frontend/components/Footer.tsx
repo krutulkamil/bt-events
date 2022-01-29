@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import styles from '@/styles/Footer.module.css';
+import {FunctionComponent} from "react";
 
-const Footer = () => {
+const Footer: FunctionComponent = (): JSX.Element => {
     const currentYear = new Date().getFullYear()
 
     return (

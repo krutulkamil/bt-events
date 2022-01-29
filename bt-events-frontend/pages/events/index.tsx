@@ -2,8 +2,16 @@ import Layout from '@/components/Layout';
 import EventItem from "@/components/EventItem";
 import {API_URL, PER_PAGE} from '@/config/index';
 import Pagination from "@/components/Pagination";
+import {Event, EventMetadata} from "@/helpers/types";
+import {GetServerSideProps, NextPage} from "next";
 
-export default function EventsPage({events, page, total}) {
+interface PageProps {
+    events: Event[];
+    page: number;
+    total: number;
+}
+
+const EventsPage: NextPage<PageProps> = ({events, page, total}): JSX.Element => {
     return (
         <Layout>
             <h1>Events</h1>
@@ -17,10 +25,9 @@ export default function EventsPage({events, page, total}) {
     )
 };
 
-export async function getServerSideProps ({query: {page = 1}}) {
+export const getServerSideProps: GetServerSideProps = async ({query: {page = 1}}) => {
 
-    const res = await fetch(`${API_URL}/api/events?populate=image&pagination[page]=${page}&pagination[pageSize]=${PER_PAGE}`);
-    const events = await res.json();
+    const events: EventMetadata = await(await fetch(`${API_URL}/api/events?populate=image&pagination[page]=${page}&pagination[pageSize]=${PER_PAGE}`)).json();
 
     return {
         props: {
@@ -30,3 +37,5 @@ export async function getServerSideProps ({query: {page = 1}}) {
         }
     }
 }
+
+export default EventsPage;

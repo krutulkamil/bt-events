@@ -1,30 +1,28 @@
-import React, {FunctionComponent, ReactChild, ReactChildren} from 'react';
+import React, {FunctionComponent, ReactNode} from 'react';
 import {createContext, useState, useEffect} from 'react';
-import {useRouter} from 'next/router';
+import {NextRouter, useRouter} from 'next/router';
 import {NEXT_URL} from "@/config/index";
+import {User} from "@/helpers/types";
 
-export interface AuxProps {
-    children: ReactChild | ReactChildren;
+interface UserContextProviderProps {
+    children: ReactNode
 }
 
-export interface User {
-    id:        number;
-    username:  string;
-    email:     string;
-    provider:  string;
-    confirmed: boolean;
-    blocked:   boolean;
-    createdAt: Date;
-    updatedAt: Date;
+interface UserContextType {
+    user: User | null;
+    error: string | null;
+    register: ({username, email, password}: {username: string, email: string, password: string}) => Promise<void>;
+    login: ({email, password}: {email: string, password: string}) => Promise<void>;
+    logout: () => Promise<void>;
 }
 
-const AuthContext = createContext(null);
+const AuthContext = createContext<UserContextType | null>(null);
 
-export const AuthProvider: FunctionComponent<AuxProps> = ({children}) => {
-    const [user, setUser] = useState<User>(null);
-    const [error, setError] = useState(null);
+export const AuthProvider: FunctionComponent<UserContextProviderProps> = ({children}) => {
+    const [user, setUser] = useState<User | null>(null);
+    const [error, setError] = useState<string | null>(null);
 
-    const router = useRouter();
+    const router: NextRouter = useRouter();
 
     useEffect(() => {
         const checkUserAsync = async () => {
@@ -47,7 +45,7 @@ export const AuthProvider: FunctionComponent<AuxProps> = ({children}) => {
 
         if (res.ok) {
             setUser(data.user);
-            router.push("/account/dashboard");
+            await router.push("/account/dashboard");
         } else {
             setError(data.message);
             setError(null);
@@ -67,7 +65,7 @@ export const AuthProvider: FunctionComponent<AuxProps> = ({children}) => {
 
         if (res.ok) {
             setUser(data.user);
-            router.push("/account/dashboard");
+            await router.push("/account/dashboard");
         } else {
             setError(data.message);
             setError(null);
@@ -81,11 +79,11 @@ export const AuthProvider: FunctionComponent<AuxProps> = ({children}) => {
 
         if (res.ok) {
             setUser(null);
-            router.push("/");
+            await router.push("/");
         }
     };
 
-    const checkUserLoggedIn = async (): Promise<void> => {
+    const checkUserLoggedIn = async () => {
         const res = await fetch(`${NEXT_URL}/api/user`);
         const data = await res.json();
 

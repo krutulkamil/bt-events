@@ -1,12 +1,14 @@
 import Layout from '@/components/Layout';
-import {useRouter} from 'next/router';
+import {NextRouter, useRouter} from 'next/router';
 import Link from 'next/link';
+import {GetServerSideProps, NextPage} from "next";
 import EventItem from "@/components/EventItem";
 import {API_URL} from '@/config/index';
 import qs from 'qs';
+import {Event} from '@/helpers/types';
 
-export default function SearchPage({events}) {
-    const router = useRouter();
+const SearchPage: NextPage<{events: Event[]}> = ({events}) => {
+    const router: NextRouter = useRouter();
 
     return (
         <Layout title="Search Results">
@@ -22,8 +24,8 @@ export default function SearchPage({events}) {
     )
 };
 
-export async function getServerSideProps ({query: {term}}) {
-    const query = (term) => {
+export const getServerSideProps: GetServerSideProps = async ({query: {term}}) => {
+    const query = (term: string | string[]) => {
         return qs.stringify({
             filters: {
                 $or: [
@@ -52,10 +54,12 @@ export async function getServerSideProps ({query: {term}}) {
         });
     };
 
-    const res = await fetch(`${API_URL}/api/events?populate=image&${query(term)}`);
-    const events = await res.json();
+    const events = await(await fetch(`${API_URL}/api/events?populate=image&${query(term)}`)).json();
+    const data: Event[] = events.data;
 
     return {
-        props: {events: events.data}
+        props: {events: data}
     }
 }
+
+export default SearchPage;

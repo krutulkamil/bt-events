@@ -1,13 +1,13 @@
-import React, {useState} from 'react';
-import {useRouter} from 'next/router';
+import React, {FunctionComponent, useState} from 'react';
+import {NextRouter, useRouter} from 'next/router';
 import styles from '@/styles/Search.module.css';
 
-const Search = () => {
-    const [term, setTerm] = useState('');
+const Search: FunctionComponent = (): JSX.Element => {
+    const [term, setTerm] = useState<string>('');
 
-    const router = useRouter();
+    const router: NextRouter = useRouter();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         router.push(`/events/search?term=${term}`);
         setTerm('');

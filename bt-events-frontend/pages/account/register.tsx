@@ -6,9 +6,17 @@ import {FaUser} from 'react-icons/fa';
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from '@/styles/AuthForm.module.css';
+import {NextPage} from "next";
 
-const RegisterPage = () => {
-    const [values, setValues] = useState({
+interface RegisterState {
+    username: string;
+    email: string;
+    password: string;
+    passwordConfirm: string;
+}
+
+const RegisterPage: NextPage = () => {
+    const [values, setValues] = useState<RegisterState>({
         username: "",
         email: "",
         password: "",
@@ -17,15 +25,19 @@ const RegisterPage = () => {
 
     const {register, error} = useContext(AuthContext);
 
-    useEffect(() => error && toast.error(error, {theme: 'dark'}), [error]);
+    useEffect(() => {
+        const checkErrors = () => error && toast.error(error, {theme: 'dark'});
+
+        checkErrors();
+    }, [error]);
 
     const {username, email, password, passwordConfirm} = values;
 
-    const handleInputChange = name => e => {
-        setValues({...values, [name]: e.target.value});
+    const handleInputChange = (value: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+        setValues({...values, [value]: e.target.value});
     };
 
-    const handleSubmit = e => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
 
         if (password !== passwordConfirm) {
@@ -33,7 +45,7 @@ const RegisterPage = () => {
             return;
         }
 
-        register({username, email, password})
+        await register({username, email, password})
     };
 
     return (

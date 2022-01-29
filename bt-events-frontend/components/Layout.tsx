@@ -1,12 +1,20 @@
+import React, {FunctionComponent} from 'react';
 import Head from 'next/head';
-import {useRouter} from 'next/router';
+import {NextRouter, useRouter} from 'next/router';
 import Header from "./Header";
 import Footer from "./Footer";
 import Showcase from "./Showcase";
 import styles from '@/styles/Layout.module.css'
 
-const Layout = ({title, keywords, description, children}) => {
-    const router = useRouter();
+interface LayoutProps {
+    title?: string;
+    keywords?: string;
+    description?: string
+    children: React.ReactNode
+}
+
+const Layout: FunctionComponent<LayoutProps> = ({title, keywords, description, children}): JSX.Element => {
+    const router: NextRouter = useRouter();
 
     return (
         <div>

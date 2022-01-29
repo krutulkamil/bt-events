@@ -5,11 +5,18 @@ import {API_URL} from "@/config/index";
 import styles from "@/styles/Dashboard.module.css";
 import {useRouter} from 'next/router';
 import {toast} from "react-toastify";
+import {Event, EventMetadata} from "@/helpers/types";
+import {GetServerSideProps, NextPage} from "next";
 
-const DashboardPage = ({events, token}) => {
+interface PageProps {
+    events: Event[],
+    token: string
+}
+
+const DashboardPage: NextPage<PageProps> = ({events, token}): JSX.Element => {
     const router = useRouter();
 
-    const deleteEvent = async (id) => {
+    const deleteEvent = async (id: number) => {
         if (confirm('Are you sure?')) {
             const res = await fetch(`${API_URL}/api/events/${id}`, {
                 method: 'DELETE',
@@ -42,20 +49,17 @@ const DashboardPage = ({events, token}) => {
     );
 };
 
-export async function getServerSideProps({req}) {
+export const getServerSideProps: GetServerSideProps = async ({req}) => {
     const {token} = parseCookies(req);
 
-    const userRes = await fetch(`${API_URL}/api/users/me`, {
+    const currentUser = await(await fetch(`${API_URL}/api/users/me`, {
         method: "GET",
         headers: {
             Authorization: `Bearer ${token}`
         }
-    });
+    })).json();
 
-    const currentUser = await userRes.json();
-
-    const eventsRes = await fetch(`${API_URL}/api/events?populate=*&filters[user][username][$eq]=${currentUser.username}`);
-    const events = await eventsRes.json();
+    const events: EventMetadata = await(await fetch(`${API_URL}/api/events?populate=*&filters[user][username][$eq]=${currentUser.username}`)).json();
 
     return {
         props: {

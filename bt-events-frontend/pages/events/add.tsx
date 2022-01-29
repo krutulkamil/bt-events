@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {useRouter} from 'next/router';
+import {NextRouter, useRouter} from 'next/router';
 import Link from 'next/link';
 import {parseCookies} from "@/helpers/index";
 import slugify from 'slugify';
@@ -9,11 +9,26 @@ import Layout from "@/components/Layout";
 import {API_URL} from "@/config/index";
 import styles from '@/styles/Form.module.css';
 import AuthContext from "@/context/AuthContext";
+import {GetServerSideProps, NextPage} from "next";
+import {User} from "@/helpers/types";
 
-const AddEventPage = ({token}) => {
+interface AddEventState {
+    name: string;
+    slug: string;
+    performers: string;
+    venue: string;
+    address: string;
+    date: string;
+    time: string;
+    description: string;
+    user: User;
+}
+
+const AddEventPage: NextPage<{token: string}> = ({token}) => {
+
     const {user: loggedUser} = useContext(AuthContext);
 
-    const [values, setValues] = useState({
+    const [values, setValues] = useState<AddEventState>({
         name: '',
         slug: '',
         performers: '',
@@ -22,7 +37,7 @@ const AddEventPage = ({token}) => {
         date: '',
         time: '',
         description: '',
-        user: loggedUser.id
+        user: loggedUser
     });
 
     const {name, performers, venue, address, date, time, description} = values;
@@ -33,18 +48,18 @@ const AddEventPage = ({token}) => {
         }
     }
 
-    const router = useRouter();
+    const router: NextRouter = useRouter();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
 
-        const hasEmptyFields = Object.values(values).some((element) => element === "");
+        const hasEmptyFields: boolean = Object.values(values).some((element) => element === "");
 
         if (hasEmptyFields) {
             toast.error('Please fill in all fields', {theme: "dark"});
         }
 
-        const res = await fetch(`${API_URL}/api/events`, {
+        const res: Response = await fetch(`${API_URL}/api/events`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -61,7 +76,7 @@ const AddEventPage = ({token}) => {
             toast.error("Something went wrong", {theme: "dark"});
         } else {
             const evt = await res.json();
-            router.push(`/events/${evt.data.attributes.slug}`);
+            await router.push(`/events/${evt.data.attributes.slug}`);
         }
 
         setValues({
@@ -73,11 +88,11 @@ const AddEventPage = ({token}) => {
             date: '',
             time: '',
             description: '',
-            user: null
+            user: loggedUser
         });
     };
 
-    const handleInputChange = value => e => {
+    const handleInputChange = (value: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setValues({...values, [value]: e.target.value});
     };
 
@@ -179,7 +194,7 @@ const AddEventPage = ({token}) => {
     );
 };
 
-export async function getServerSideProps({req}) {
+export const getServerSideProps: GetServerSideProps = async ({req}) => {
     const {token} = parseCookies(req);
 
     return {

@@ -1,11 +1,17 @@
-import React, {useState} from 'react';
+import React, {FunctionComponent, useState} from 'react';
 import {API_URL} from "@/config/index";
 import styles from '@/styles/Form.module.css';
 
-const ImageUpload = ({evtId, imageUploaded, token}) => {
-    const [image, setImage] = useState(null);
+interface Props {
+    evtId: string | Blob;
+    imageUploaded: () => Promise<void>;
+    token: string;
+}
 
-    const handleSubmit = async (e) => {
+const ImageUpload: FunctionComponent<Props> = ({evtId, imageUploaded, token}): JSX.Element => {
+    const [image, setImage] = useState<File | null>(null);
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
         const formData = new FormData();
         formData.append('files', image);
@@ -22,11 +28,11 @@ const ImageUpload = ({evtId, imageUploaded, token}) => {
         });
 
         if (res.ok) {
-            imageUploaded();
+            await imageUploaded();
         }
     };
 
-    const handleFileChange = (e) => {
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setImage(e.target.files[0]);
     };
 

@@ -1,8 +1,10 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import styles from '@/styles/EventItem.module.css';
+import {Event} from '@/helpers/types';
+import {FunctionComponent} from "react";
 
-const EventItem = ({evt}) => {
+const EventItem: FunctionComponent<{evt: Event}> = ({evt}): JSX.Element => {
     return (
         <div className={styles.event}>
             <div className={styles.img}>

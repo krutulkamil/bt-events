@@ -1,6 +1,33 @@
-export interface Events {
+export interface User {
+    id:        number;
+    username:  string;
+    email:     string;
+    provider:  string;
+    confirmed: boolean;
+    blocked:   boolean;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+export interface Event {
     id:         number;
     attributes: EventAttributes;
+}
+
+export interface EventMetadata {
+    data: Event[],
+    meta: Meta
+}
+
+export interface Meta {
+    pagination: Pagination;
+}
+
+export interface Pagination {
+    page: number;
+    pageSize: number;
+    pageCount: number;
+    total: number;
 }
 
 export interface EventAttributes {
@@ -11,7 +38,7 @@ export interface EventAttributes {
     slug:        string;
     venue:       string;
     address:     string;
-    date:        Date;
+    date:        string;
     time:        string;
     performers:  string;
     description: string;

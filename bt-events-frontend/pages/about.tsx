@@ -1,6 +1,7 @@
 import Layout from "@/components/Layout";
+import {NextPage} from "next";
 
-const AboutPage = (): JSX.Element => {
+const AboutPage: NextPage = (): JSX.Element => {
     return (
         <Layout title="About Breathtaking Events">
             <h1>About</h1>

@@ -6,9 +6,15 @@ import {FaUser} from 'react-icons/fa';
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from '@/styles/AuthForm.module.css';
+import {NextPage} from "next";
 
-const LoginPage = () => {
-    const [values, setValues] = useState({
+interface LoginState {
+    email: string;
+    password: string;
+}
+
+const LoginPage: NextPage = (): JSX.Element => {
+    const [values, setValues] = useState<LoginState>({
         email: "",
         password: ""
     });
@@ -21,17 +27,15 @@ const LoginPage = () => {
         checkErrors();
     }, [error]);
 
-    // useEffect(() => error && toast.error(error, {theme: 'dark'}), [error]);
-
     const {email, password} = values;
 
-    const handleInputChange = name => e => {
-        setValues({...values, [name]: e.target.value});
+    const handleInputChange = (value: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+        setValues({...values, [value]: e.target.value});
     };
 
-    const handleSubmit = e => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
-        login({email, password})
+        await login({email, password})
     };
 
     return (

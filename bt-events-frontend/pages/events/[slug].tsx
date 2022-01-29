@@ -1,23 +1,27 @@
-import {useContext} from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {FaPencilAlt, FaTimes} from 'react-icons/fa';
 import {ToastContainer, toast} from 'react-toastify';
-import {useRouter} from 'next/router';
+import {NextRouter, useRouter} from 'next/router';
 import 'react-toastify/dist/ReactToastify.css';
 import Layout from "@/components/Layout";
 import EventMap from "@/components/EventMap";
 import {API_URL} from "@/config/index";
 import styles from '@/styles/Event.module.css';
 import React from "react";
-import AuthContext from "@/context/AuthContext";
 import {parseCookies} from "@/helpers/index";
+import {Event, EventMetadata} from '@/helpers/types';
+import {GetServerSideProps, NextPage} from "next";
 
-const EventPage = ({evt, token}) => {
-    const router = useRouter();
-    const {user} = useContext(AuthContext);
+interface PageProps {
+    evt: Event;
+    token: string;
+}
 
-    const deleteEvent = async () => {
+const EventPage: NextPage<PageProps> = ({evt, token}): JSX.Element => {
+    const router: NextRouter = useRouter();
+
+    const deleteEvent = async (): Promise<void> => {
         if (confirm('Are you sure?')) {
             const res = await fetch(`${API_URL}/api/events/${evt.id}`, {
                 method: 'DELETE',
@@ -31,7 +35,7 @@ const EventPage = ({evt, token}) => {
             if (!res.ok) {
                 toast.error(data.message)
             } else {
-                router.push('/events');
+                await router.push('/events');
             }
         }
     };
@@ -96,10 +100,9 @@ const EventPage = ({evt, token}) => {
     );
 };
 
-export async function getServerSideProps({query: {slug}, req}) {
-    const res = await fetch(`${API_URL}/api/events?populate=image&filters[slug][$contains]=${slug}`);
-    const events = await res.json();
+export const getServerSideProps: GetServerSideProps = async ({query: {slug}, req}) => {
     const {token} = parseCookies(req);
+    const events: EventMetadata = await (await fetch(`${API_URL}/api/events?populate=image&filters[slug][$contains]=${slug}`)).json();
 
     return {
         props: {

@@ -2,10 +2,10 @@ import Link from 'next/link';
 import Layout from '@/components/Layout';
 import EventItem from "@/components/EventItem";
 import {API_URL} from '@/config/index';
-import {Events} from '@/helpers/types';
+import {Event} from '@/helpers/types';
 import {GetServerSideProps, NextPage} from "next";
 
-const HomePage: NextPage<{ events: Events[] }> = ({events}): JSX.Element => {
+const HomePage: NextPage<{ events: Event[] }> = ({events}): JSX.Element => {
 
     return (
         <Layout>
@@ -25,12 +25,11 @@ const HomePage: NextPage<{ events: Events[] }> = ({events}): JSX.Element => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-    const res = await fetch(`${API_URL}/api/events?populate=image&sort=date:ASC`);
-    const events = await res.json();
-    console.log(events);
+    const events = await(await fetch(`${API_URL}/api/events?populate=image&sort=date:ASC`)).json();
+    const data: Event[] = events.data;
 
     return {
-        props: {events: events.data.slice(0, 3)}
+        props: {events: data.slice(0, 3)}
     }
 }
 

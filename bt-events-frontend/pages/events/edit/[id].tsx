@@ -11,9 +11,29 @@ import ImageUpload from "@/components/ImageUpload";
 import {API_URL} from "@/config/index";
 import styles from '@/styles/Form.module.css';
 import {parseCookies} from "@/helpers/index";
+import {Event, EventMetadata} from "@/helpers/types";
+import {NextPage} from "next";
 
-const EditEventPage = ({evt, token}) => {
-    const [values, setValues] = useState({
+interface PageProps {
+    evt: Event;
+    token: string;
+}
+
+interface ValuesInitialState {
+    name: string;
+    slug: string;
+    performers: string;
+    venue: string;
+    address: string;
+    date: string;
+    time: string;
+    description: string;
+    image: number | null;
+}
+
+const EditEventPage: NextPage<PageProps> = ({evt, token}): JSX.Element => {
+
+    const [values, setValues] = useState<ValuesInitialState>({
         name: evt.attributes.name,
         slug: evt.attributes.slug,
         performers: evt.attributes.performers,
@@ -25,10 +45,10 @@ const EditEventPage = ({evt, token}) => {
         image: evt.attributes.image.data?.id || null
     });
 
-    const [imagePreview, setImagePreview] = useState(evt.attributes.image.data ?
+    const [imagePreview, setImagePreview] = useState<string | null>(evt.attributes.image.data ?
         evt.attributes.image.data.attributes.formats.thumbnail.url : null);
 
-    const [showModal, setShowModal] = useState(false);
+    const [showModal, setShowModal] = useState<boolean>(false);
 
     const {name, performers, venue, address, date, time, description} = values;
 
@@ -40,7 +60,7 @@ const EditEventPage = ({evt, token}) => {
 
     const router = useRouter();
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
         e.preventDefault();
 
         const hasEmptyFields = Object.values(values).some((element) => element === "");
@@ -66,7 +86,7 @@ const EditEventPage = ({evt, token}) => {
             toast.error("Something went wrong", {theme: "dark"})
         } else {
             const evt = await res.json();
-            router.push(`/events/${evt.data.attributes.slug}`);
+            await router.push(`/events/${evt.data.attributes.slug}`);
         }
 
         setValues({
@@ -78,15 +98,15 @@ const EditEventPage = ({evt, token}) => {
             date: '',
             time: '',
             description: '',
-            image: ''
+            image: null
         });
     };
 
-    const handleInputChange = value => e => {
+    const handleInputChange = (value: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setValues({...values, [value]: e.target.value});
     };
 
-    const imageUploaded = async (e) => {
+    const imageUploaded = async (): Promise<void> => {
         const res = await fetch(`${API_URL}/api/events/${evt.id}?populate=image`);
         const data = await res.json();
 
@@ -216,7 +236,7 @@ const EditEventPage = ({evt, token}) => {
             </div>
 
             <Modal show={showModal} onClose={() => setShowModal(false)} title="Image Upload">
-                <ImageUpload evtId={evt.id} imageUploaded={imageUploaded} token={token}/>
+                <ImageUpload evtId={evt.id.toString()} imageUploaded={imageUploaded} token={token}/>
             </Modal>
 
             <ToastContainer
@@ -234,16 +254,13 @@ const EditEventPage = ({evt, token}) => {
     );
 };
 
-export async function getServerSideProps({params: {id}, req}) {
-    const res = await fetch(`${API_URL}/api/events/${id}?populate=image`);
-    const evt = await res.json();
+export const getServerSideProps = async ({params: {id}, req}) => {
     const {token} = parseCookies(req);
-
-    // console.log(req.headers.cookie);
+    const event: EventMetadata = await(await fetch(`${API_URL}/api/events/${id}?populate=image`)).json();
 
     return {
         props: {
-            evt: evt.data,
+            evt: event.data,
             token
         }
     }

@@ -1,9 +1,15 @@
 import Link from "next/link";
 import {PER_PAGE} from "@/config/index";
+import {FunctionComponent} from "react";
 
-const Pagination = ({page, total}) => {
+interface Props {
+    page: number;
+    total: number;
+}
 
-    const lastPage = Math.ceil(total / PER_PAGE);
+const Pagination: FunctionComponent<Props> = ({page, total}): JSX.Element => {
+
+    const lastPage: number = Math.ceil(total / PER_PAGE);
     return (
         <>
             {page > 1 && (

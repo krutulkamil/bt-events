@@ -1,14 +1,23 @@
 import Image from 'next/image';
-import {useState, useEffect} from 'react';
+import {useState, useEffect, FunctionComponent} from 'react';
 import ReactMapGl, {Marker} from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import Geocode from 'react-geocode';
+import {Event} from '@/helpers/types';
 
-const EventMap = ({evt}): JSX.Element => {
-    const [lat, setLat] = useState(null);
-    const [lng, setLng] = useState(null);
-    const [loading, setLoading] = useState(null);
-    const [viewport, setViewport] = useState({
+interface ViewportInitialState {
+    latitude: number;
+    longitude: number;
+    width: string;
+    height: string;
+    zoom: number;
+}
+
+const EventMap: FunctionComponent<{evt: Event}> = ({evt}): JSX.Element => {
+    const [lat, setLat] = useState<number | null>(null);
+    const [lng, setLng] = useState<number | null>(null);
+    const [loading, setLoading] = useState<boolean | null>(null);
+    const [viewport, setViewport] = useState<ViewportInitialState>({
         latitude: 40.712772,
         longitude: -73.935242,
         width: '100%',

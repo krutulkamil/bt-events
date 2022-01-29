@@ -2,8 +2,9 @@ import { FaExclamationTriangle } from 'react-icons/fa';
 import Link from 'next/link';
 import Layout from "@/components/Layout";
 import styles from '@/styles/404.module.css'
+import {NextPage} from "next";
 
-const NotFoundPage = (): JSX.Element => {
+const NotFoundPage: NextPage = (): JSX.Element => {
     return (
         <Layout title="Page Not Found | Breathtaking Events">
             <div className={styles.error}>

@@ -1,21 +1,28 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, FunctionComponent} from 'react';
 import ReactDOM from 'react-dom';
 import {FaTimes} from 'react-icons/fa';
 import styles from '@/styles/Modal.module.css';
 
-const Modal = ({show, onClose, children, title}) => {
-    const [isBrowser, setIsBrowser] = useState(false);
+interface Props {
+    show: boolean;
+    onClose: () => void;
+    children: React.ReactNode;
+    title: string;
+}
+
+const Modal: FunctionComponent<Props> = ({show, onClose, children, title}): JSX.Element => {
+    const [isBrowser, setIsBrowser] = useState<boolean>(false);
 
     useEffect(() => {
         setIsBrowser(true);
     }, []);
 
-    const handleClose = (e) => {
+    const handleClose = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
         onClose();
     };
 
-    const modalContent = show ? (
+    const modalContent: JSX.Element = show ? (
         <div className={styles.overlay}>
             <div className={styles.modal}>
                 <div className={styles.header}>
