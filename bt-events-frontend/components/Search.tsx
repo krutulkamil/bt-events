@@ -1,5 +1,8 @@
+// react
 import React, {FunctionComponent, useState} from 'react';
+// next
 import {NextRouter, useRouter} from 'next/router';
+// styles
 import styles from '@/styles/Search.module.css';
 
 const Search: FunctionComponent = (): JSX.Element => {

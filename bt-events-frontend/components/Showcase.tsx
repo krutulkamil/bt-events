@@ -1,5 +1,7 @@
-import styles from '@/styles/Showcase.module.css';
+// react
 import {FunctionComponent} from "react";
+// styles
+import styles from '@/styles/Showcase.module.css';
 
 const Showcase: FunctionComponent = (): JSX.Element => {
     return (

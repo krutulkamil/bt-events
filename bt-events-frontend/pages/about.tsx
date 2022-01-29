@@ -1,5 +1,7 @@
-import Layout from "@/components/Layout";
+// next
 import {NextPage} from "next";
+// components
+import Layout from "@/components/Layout";
 
 const AboutPage: NextPage = (): JSX.Element => {
     return (

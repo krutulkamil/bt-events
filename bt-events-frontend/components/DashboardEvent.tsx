@@ -1,8 +1,13 @@
-import Link from 'next/link';
-import {FaPencilAlt, FaTimes} from 'react-icons/fa';
-import styles from '@/styles/DashboardEvent.module.css';
-import {Event} from '@/helpers/types';
+// react
 import {FunctionComponent} from "react";
+// next
+import Link from 'next/link';
+// icons
+import {FaPencilAlt, FaTimes} from 'react-icons/fa';
+// styles
+import styles from '@/styles/DashboardEvent.module.css';
+// types
+import {Event} from '@/helpers/types';
 
 interface Props {
     evt: Event,

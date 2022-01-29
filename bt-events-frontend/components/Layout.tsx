@@ -1,9 +1,13 @@
+// react
 import React, {FunctionComponent} from 'react';
+// next
 import Head from 'next/head';
 import {NextRouter, useRouter} from 'next/router';
+// components
 import Header from "./Header";
 import Footer from "./Footer";
 import Showcase from "./Showcase";
+// styles
 import styles from '@/styles/Layout.module.css'
 
 interface LayoutProps {

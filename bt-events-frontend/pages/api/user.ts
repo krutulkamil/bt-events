@@ -1,6 +1,9 @@
-import cookie from 'cookie';
-import {API_URL} from '@/config/index';
+// next
 import type {NextApiRequest, NextApiResponse} from 'next';
+// cookies
+import cookie from 'cookie';
+// config
+import {API_URL} from '@/config/index';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === 'GET') {

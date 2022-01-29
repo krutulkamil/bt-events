@@ -1,5 +1,7 @@
-import cookie from 'cookie';
+// next
 import type {NextApiRequest, NextApiResponse} from 'next';
+// cookies
+import cookie from 'cookie';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === 'POST') {

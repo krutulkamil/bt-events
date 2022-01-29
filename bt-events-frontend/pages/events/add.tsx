@@ -1,15 +1,25 @@
+// react
 import React, {useContext, useState} from 'react';
+// next
 import {NextRouter, useRouter} from 'next/router';
 import Link from 'next/link';
+import {GetServerSideProps, NextPage} from "next";
+// context
+import AuthContext from "@/context/AuthContext";
+// cookies
 import {parseCookies} from "@/helpers/index";
+// slugs
 import slugify from 'slugify';
+// react-toastify
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Layout from "@/components/Layout";
+// config
 import {API_URL} from "@/config/index";
+// components
+import Layout from "@/components/Layout";
+// styles
 import styles from '@/styles/Form.module.css';
-import AuthContext from "@/context/AuthContext";
-import {GetServerSideProps, NextPage} from "next";
+// types
 import {User} from "@/helpers/types";
 
 interface AddEventState {

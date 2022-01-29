@@ -1,6 +1,9 @@
+// react
 import React, {useState, useEffect, FunctionComponent} from 'react';
 import ReactDOM from 'react-dom';
+// icons
 import {FaTimes} from 'react-icons/fa';
+// styles
 import styles from '@/styles/Modal.module.css';
 
 interface Props {

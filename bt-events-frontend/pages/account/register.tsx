@@ -1,12 +1,19 @@
+// react
 import React, {useState, useEffect, useContext} from 'react';
+// next
+import {NextPage} from "next";
 import Link from 'next/link';
-import Layout from '@/components/Layout';
+// context
 import AuthContext from "@/context/AuthContext";
-import {FaUser} from 'react-icons/fa';
+// react-toastify
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+// components
+import Layout from '@/components/Layout';
+// icons
+import {FaUser} from 'react-icons/fa';
+// styles
 import styles from '@/styles/AuthForm.module.css';
-import {NextPage} from "next";
 
 interface RegisterState {
     username: string;

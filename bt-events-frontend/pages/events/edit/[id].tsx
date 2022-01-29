@@ -1,18 +1,27 @@
+// react
 import React, {useState} from 'react';
+// next
+import {NextPage} from "next";
 import {useRouter} from 'next/router';
 import Link from 'next/link';
 import Image from 'next/image';
+// config
+import {API_URL} from "@/config/index";
+// cookies
+import {parseCookies} from "@/helpers/index";
+// icons
 import {FaImage} from 'react-icons/fa';
+// react-toastify
 import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+// components
 import Layout from "@/components/Layout";
 import Modal from "@/components/Modal";
 import ImageUpload from "@/components/ImageUpload";
-import {API_URL} from "@/config/index";
+// styles
 import styles from '@/styles/Form.module.css';
-import {parseCookies} from "@/helpers/index";
+// types
 import {Event, EventMetadata} from "@/helpers/types";
-import {NextPage} from "next";
 
 interface PageProps {
     evt: Event;

@@ -1,8 +1,12 @@
-import Image from 'next/image';
+// react
 import {useState, useEffect, FunctionComponent} from 'react';
+// next
+import Image from 'next/image';
+// google maps
 import ReactMapGl, {Marker} from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 import Geocode from 'react-geocode';
+// types
 import {Event} from '@/helpers/types';
 
 interface ViewportInitialState {

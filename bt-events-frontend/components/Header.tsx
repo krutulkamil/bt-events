@@ -1,9 +1,15 @@
+// react
 import {FunctionComponent, useContext} from 'react';
-import {FaHamsa, FaSignInAlt, FaSignOutAlt} from 'react-icons/fa'
+// next
 import Link from 'next/link';
-import styles from '@/styles/Header.module.css';
-import Search from "@/components/Search";
+// context
 import AuthContext from '@/context/AuthContext';
+// components
+import Search from "@/components/Search";
+// icons
+import {FaHamsa, FaSignInAlt, FaSignOutAlt} from 'react-icons/fa'
+// styles
+import styles from '@/styles/Header.module.css';
 
 const Header: FunctionComponent = (): JSX.Element => {
     const {user, logout} = useContext(AuthContext);

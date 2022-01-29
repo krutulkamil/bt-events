@@ -1,7 +1,10 @@
-import React, {FunctionComponent, ReactNode} from 'react';
-import {createContext, useState, useEffect} from 'react';
+// react
+import React, {FunctionComponent, ReactNode, createContext, useState, useEffect} from 'react';
+// next
 import {NextRouter, useRouter} from 'next/router';
+// config
 import {NEXT_URL} from "@/config/index";
+// types
 import {User} from "@/helpers/types";
 
 interface UserContextProviderProps {

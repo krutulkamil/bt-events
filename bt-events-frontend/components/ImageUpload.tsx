@@ -1,5 +1,8 @@
+// react
 import React, {FunctionComponent, useState} from 'react';
+// config
 import {API_URL} from "@/config/index";
+// styles
 import styles from '@/styles/Form.module.css';
 
 interface Props {

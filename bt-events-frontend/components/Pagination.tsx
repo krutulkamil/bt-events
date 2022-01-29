@@ -1,6 +1,9 @@
-import Link from "next/link";
-import {PER_PAGE} from "@/config/index";
+// react
 import {FunctionComponent} from "react";
+// next
+import Link from "next/link";
+// config
+import {PER_PAGE} from "@/config/index";
 
 interface Props {
     page: number;

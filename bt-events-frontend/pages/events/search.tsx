@@ -1,10 +1,15 @@
-import Layout from '@/components/Layout';
+// next
+import {GetServerSideProps, NextPage} from "next";
 import {NextRouter, useRouter} from 'next/router';
 import Link from 'next/link';
-import {GetServerSideProps, NextPage} from "next";
-import EventItem from "@/components/EventItem";
+// config
 import {API_URL} from '@/config/index';
+// query-string
 import qs from 'qs';
+// components
+import Layout from '@/components/Layout';
+import EventItem from "@/components/EventItem";
+// types
 import {Event} from '@/helpers/types';
 
 const SearchPage: NextPage<{events: Event[]}> = ({events}) => {

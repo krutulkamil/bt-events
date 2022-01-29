@@ -1,17 +1,26 @@
+// react
+import React from "react";
+// next
+import {GetServerSideProps, NextPage} from "next";
 import Link from 'next/link';
 import Image from 'next/image';
-import {FaPencilAlt, FaTimes} from 'react-icons/fa';
-import {ToastContainer, toast} from 'react-toastify';
 import {NextRouter, useRouter} from 'next/router';
+// cookies
+import {parseCookies} from "@/helpers/index";
+// config
+import {API_URL} from "@/config/index";
+// react-toastify
+import {ToastContainer, toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+// icons
+import {FaPencilAlt, FaTimes} from 'react-icons/fa';
+// components
 import Layout from "@/components/Layout";
 import EventMap from "@/components/EventMap";
-import {API_URL} from "@/config/index";
+// styles
 import styles from '@/styles/Event.module.css';
-import React from "react";
-import {parseCookies} from "@/helpers/index";
+// types
 import {Event, EventMetadata} from '@/helpers/types';
-import {GetServerSideProps, NextPage} from "next";
 
 interface PageProps {
     evt: Event;

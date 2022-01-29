@@ -1,9 +1,13 @@
+// next
+import {GetServerSideProps, NextPage} from "next";
 import Link from 'next/link';
+// components
 import Layout from '@/components/Layout';
 import EventItem from "@/components/EventItem";
+// config
 import {API_URL} from '@/config/index';
+// types
 import {Event} from '@/helpers/types';
-import {GetServerSideProps, NextPage} from "next";
 
 const HomePage: NextPage<{ events: Event[] }> = ({events}): JSX.Element => {
 

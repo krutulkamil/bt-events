@@ -1,9 +1,13 @@
+// next
+import {GetServerSideProps, NextPage} from "next";
+// config
+import {API_URL, PER_PAGE} from '@/config/index';
+// components
 import Layout from '@/components/Layout';
 import EventItem from "@/components/EventItem";
-import {API_URL, PER_PAGE} from '@/config/index';
 import Pagination from "@/components/Pagination";
+// types
 import {Event, EventMetadata} from "@/helpers/types";
-import {GetServerSideProps, NextPage} from "next";
 
 interface PageProps {
     events: Event[];

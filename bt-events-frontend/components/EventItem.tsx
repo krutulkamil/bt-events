@@ -1,8 +1,12 @@
+// react
+import {FunctionComponent} from "react";
+// next
 import Link from 'next/link';
 import Image from 'next/image';
+// styles
 import styles from '@/styles/EventItem.module.css';
+// types
 import {Event} from '@/helpers/types';
-import {FunctionComponent} from "react";
 
 const EventItem: FunctionComponent<{evt: Event}> = ({evt}): JSX.Element => {
     return (

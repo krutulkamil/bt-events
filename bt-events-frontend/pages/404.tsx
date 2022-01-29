@@ -1,8 +1,12 @@
-import { FaExclamationTriangle } from 'react-icons/fa';
-import Link from 'next/link';
-import Layout from "@/components/Layout";
-import styles from '@/styles/404.module.css'
+// next
 import {NextPage} from "next";
+import Link from 'next/link';
+// components
+import Layout from "@/components/Layout";
+// icons
+import { FaExclamationTriangle } from 'react-icons/fa';
+// styles
+import styles from '@/styles/404.module.css'
 
 const NotFoundPage: NextPage = (): JSX.Element => {
     return (

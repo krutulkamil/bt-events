@@ -1,12 +1,19 @@
+// next
+import {GetServerSideProps, NextPage} from "next";
+import {useRouter} from 'next/router';
+// cookies
 import {parseCookies} from '@/helpers/index';
+// config
+import {API_URL} from "@/config/index";
+// react-toastify
+import {toast} from "react-toastify";
+// components
 import Layout from "@/components/Layout";
 import DashboardEvent from "@/components/DashboardEvent";
-import {API_URL} from "@/config/index";
+// styles
 import styles from "@/styles/Dashboard.module.css";
-import {useRouter} from 'next/router';
-import {toast} from "react-toastify";
+// types
 import {Event, EventMetadata} from "@/helpers/types";
-import {GetServerSideProps, NextPage} from "next";
 
 interface PageProps {
     events: Event[],
