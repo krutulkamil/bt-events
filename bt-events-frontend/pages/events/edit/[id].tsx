@@ -270,7 +270,7 @@ export const getServerSideProps = async ({params: {id}, req}) => {
     return {
         props: {
             evt: event.data,
-            token
+            token: token || null
         }
     }
 }

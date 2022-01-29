@@ -209,7 +209,7 @@ export const getServerSideProps: GetServerSideProps = async ({req}) => {
 
     return {
         props: {
-            token
+            token: token || null
         }
     }
 }

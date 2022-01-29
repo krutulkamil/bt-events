@@ -41,8 +41,10 @@ const EventPage: NextPage<PageProps> = ({evt, token}): JSX.Element => {
 
             const data = await res.json();
 
+            console.log(data);
+
             if (!res.ok) {
-                toast.error(data.message)
+                toast.error(data.error.message)
             } else {
                 await router.push('/events');
             }
@@ -116,7 +118,7 @@ export const getServerSideProps: GetServerSideProps = async ({query: {slug}, req
     return {
         props: {
             evt: events.data[0],
-            token
+            token: token || null
         }
     }
 }
