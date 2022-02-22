@@ -1,5 +1,5 @@
 ## BreathtakingEvents
-![BTEVENTS](https://user-images.githubusercontent.com/79461468/155187130-b1063b7f-4760-434d-9c28-ed991177757b.png)
+![btevents](https://user-images.githubusercontent.com/79461468/155208741-fffa1041-e044-468c-878f-3cf08e969dba.png)
 
 ### :floppy_disk: Live demo  : 
 https://bt-events-frontend.vercel.app/
