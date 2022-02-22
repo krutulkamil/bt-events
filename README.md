@@ -4,6 +4,10 @@
 ### :floppy_disk: Live demo  : 
 https://bt-events-frontend.vercel.app/
 
+### :musical_note: Give it a try!
+Login: krutulkamil@onet.pl<br />
+Password: test12345
+
 ### :bricks: Stack  : 
 TypeScript, Next.js, Next.js API & Strapi CMS, CSS, Google Maps
 
